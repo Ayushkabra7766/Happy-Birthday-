@@ -1,21 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday! Wish</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday 🎉</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
+      font-family: 'Verdana', sans-serif;
+      color: #fff;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-top: 20vh;
+      text-shadow: 0 0 20px #fff, 0 0 30px #ff69b4, 0 0 40px #ff1493;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff, 0 0 20px #ff69b4; }
+      to { text-shadow: 0 0 20px #fff, 0 0 40px #ff1493, 0 0 60px #ff69b4; }
+    }
+
+    p {
+      font-size: 1.2em;
+      margin-top: 20px;
+      text-shadow: 0 0 5px #fff;
+    }
+
+    .wish-box {
+      margin-top: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 15px;
+      display: inline-block;
+      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
 </head>
 <body>
   
-<canvas id=c></canvas>
+  <h1>🎂 Happy Birthday, My Best Friend! 🎂</h1>
+  <div class="wish-box">
+    <p>May your day be filled with endless laughter, sweet surprises, and dreams coming true.</p>
+    <p>You’re not just my friend, you’re family 💖</p>
+    <p>Here’s to another year of adventures together! 🥳✨</p>
+  </div>
 
+  <canvas id="confetti"></canvas>
 
-<!-- JavaScript -->
-<script src="app.js"></script>
+  <script>
+    // Confetti Animation
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-<!-- Whole Code Credit: https://codepen.io/robin-ivi -->
-<!-- Thanks Er Robin!-->
+    const confettiPieces = [];
+    const colors = ['#ff0', '#0f0', '#0ff', '#f0f', '#f00', '#00f'];
+
+    function ConfettiPiece(x, y, color) {
+      this.x = x;
+      this.y = y;
+      this.color = color;
+      this.size = Math.random() * 8 + 2;
+      this.speedY = Math.random() * 3 + 2;
+      this.speedX = Math.random() * 2 - 1;
+    }
+
+    ConfettiPiece.prototype.update = function() {
+      this.y += this.speedY;
+      this.x += this.speedX;
+      if (this.y > canvas.height) {
+        this.y = -10;
+        this.x = Math.random() * canvas.width;
+      }
+    };
+
+    ConfettiPiece.prototype.draw = function() {
+      ctx.fillStyle = this.color;
+      ctx.fillRect(this.x, this.y, this.size, this.size);
+    };
+
+    function initConfetti() {
+      for (let i = 0; i < 150; i++) {
+        confettiPieces.push(new ConfettiPiece(Math.random() * canvas.width, Math.random() * canvas.height, colors[Math.floor(Math.random() * colors.length)]));
+      }
+    }
+
+    function animateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiPieces.forEach(piece => {
+        piece.update();
+        piece.draw();
+      });
+      requestAnimationFrame(animateConfetti);
+    }
+
+    initConfetti();
+    animateConfetti();
+  </script>
 </body>
 </html>
